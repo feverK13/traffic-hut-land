@@ -21,31 +21,26 @@
 
     <script src="./main.js"></script>
     <script>
-      !(function () {
-        "use strict";
-        var c = "click_id";
-        !(function () {
-          var e,
-            t =
-              "https://globalvisitlog.com/cf/cv?click_id=OPTIONAL&payout=OPTIONAL&txid=OPTIONAL",
-            n = document.createElement("script"),
-            i = document.scripts[0],
-            o = new RegExp("(^| )".concat("cf_click_id", "=([^;]+)")),
-            a = document.cookie.match(o);
-          if (a)
-            if (-1 < t.indexOf("".concat(c, "="))) {
-              var r = new RegExp("".concat(c, "=.*?(&|$)"));
-              t = t.replace(r, "".concat(c, "=") + a.pop() + "&");
-            } else {
-              var d = -1 < t.indexOf("?") ? "&" : "?";
-              t += d + "".concat(c, "=") + a.pop();
-            }
-          ((n.src = t),
-            null === (e = i.parentNode) ||
-              void 0 === e ||
-              e.insertBefore(n, i));
-        })();
-      })();
+      document.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(window.location.search);
+        const clickId = params.get("click_id");
+
+        if (clickId) {
+          const postbackUrl = `https://globalvisitlog.com/cf/cv?click_id=${clickId}&payout=1`;
+
+          fetch(postbackUrl, { mode: "no-cors" })
+            .then(() =>
+              console.log(
+                "✅ Сигнал конверсії успішно відправлено в Clickflare!",
+              ),
+            )
+            .catch((err) => console.error("Помилка відправки конверсії:", err));
+        } else {
+          console.warn(
+            "🟡 click_id не знайдено в URL. Конверсія не відправлена.",
+          );
+        }
+      });
     </script>
   </body>
 </html>
