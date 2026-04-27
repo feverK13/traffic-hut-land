@@ -33,7 +33,13 @@
       );
       fbq("init", "1644816010096418");
       fbq("track", "PageView");
-      fbq("track", "Lead");
+      const urlParams = new URLSearchParams(window.location.search);
+      const clickId = urlParams.get("click_id");
+      if (clickId) {
+        fbq("track", "Lead", {}, { eventID: clickId });
+      } else {
+        fbq("track", "Lead");
+      }
     </script>
     <noscript
       ><img
